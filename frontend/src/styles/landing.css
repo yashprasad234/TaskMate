@@ -1,0 +1,18 @@
+.landing-card {
+  padding: 30px;
+  margin-top: 20px;
+  text-align: center;
+  min-height: 280px;
+  border: none;
+  box-shadow: none;
+}
+
+.left-card {
+  margin-left: 2rem;
+}
+
+.right-card {
+  max-width: 350px;
+  padding-top: 50px;
+  margin-left: 8rem;
+}

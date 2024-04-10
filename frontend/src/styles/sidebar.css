@@ -1,0 +1,19 @@
+.sidebar {
+  background-color: #fbf9f7;
+  padding: 10px;
+  height: 79.35vh;
+}
+
+.sidebar-el {
+  margin: 10px;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+}
+
+.active {
+  border: 1px solid #fee7e2;
+  color: #faa999;
+  background-color: #fee7e2;
+  border-radius: 5px;
+}

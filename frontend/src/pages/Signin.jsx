@@ -3,7 +3,7 @@ import { Card, TextField, Typography, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-const backendUrl = "http://localhost:3000/api";
+const backendUrl = "http://ec2-16-171-143-39.eu-north-1.compute.amazonaws.com:3000/api";
 
 /**
  * Functional component representing the sign-in form.

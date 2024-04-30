@@ -9,7 +9,7 @@ const authenticateJwt = (req, res, next) => {
       if (err) {
         return res.sendStatus(403);
       }
-      req.user = user;
+      req.userId = user.id;
       next();
     });
   } else {

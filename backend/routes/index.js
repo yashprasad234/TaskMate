@@ -6,13 +6,15 @@ const { SECRET, authenticateJwt } = require("../middleware/auth.js");
 const router = express.Router();
 
 router.get("/me", authenticateJwt, async (req, res) => {
-  const user = await User.findOne({ username: req.user.username });
+  const user = await User.findById(req.userId);
   if (!user) {
     res.status(403).json({ msg: "User doesnt exist" });
     return;
   }
+  const { password, ...others } = user._doc;
   res.json({
-    username: user.username,
+    userId: req.userId,
+    user: { others }
   });
 });
 
@@ -25,7 +27,7 @@ router.post("/signup", async (req, res) => {
   } else {
     const newUser = new User({ username, password });
     await newUser.save();
-    const token = jwt.sign({ username }, SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: newUser._id }, SECRET, { expiresIn: "1h" });
     res.json({ message: "User created successfully" });
   }
 });
@@ -34,7 +36,7 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.headers;
   const user = await User.findOne({ username, password });
   if (user) {
-    const token = jwt.sign({ username }, SECRET, {
+    const token = jwt.sign({ id: user._id }, SECRET, {
       expiresIn: "1h",
     });
     req.user = user;
@@ -45,20 +47,21 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/todos", authenticateJwt, async (req, res) => {
-  const user = await User.findOne({ username: req.user.username });
+  const user = await User.findById(req.userId);
+  const now = new Date();
   if (user) {
-    const newTodo = new Todo({ ...req.body, isDone: false });
+    const newTodo = new Todo({ ...req.body, timestamp: now, userId: user._id });
     await newTodo.save();
     user.todos.push(newTodo);
     await user.save();
-    res.json({ message: "Todo created successfully" });
+    res.json({ message: "Todo created successfully", todo: newTodo });
   } else {
     res.status(403).json({ message: "User not found" });
   }
 });
 
 router.get("/todos", authenticateJwt, async (req, res) => {
-  const user = await User.findOne({ username: req.user.username }).populate(
+  const user = await User.findById(req.userId).populate(
     "todos"
   );
   if (user) {
@@ -68,26 +71,26 @@ router.get("/todos", authenticateJwt, async (req, res) => {
   }
 });
 
-router.get("/todos/:id", authenticateJwt, async (req, res) => {
-  const user = await User.findOne({ username: req.user.username }).populate(
-    "todos"
-  );
-  if (user) {
-    const todo = user.todos.find(
-      (todo) => todo._id.toString() === req.params.id
-    );
-    if (todo) {
-      res.json({ todo });
-    } else {
-      res.status(404).json({ message: "Todo not found" });
-    }
-  } else {
-    res.status(403).json({ message: "User not found" });
-  }
-});
+// router.get("/todos/:id", authenticateJwt, async (req, res) => {
+//   const user = await User.findById(req.userId).populate(
+//     "todos"
+//   );
+//   if (user) {
+//     const todo = user.todos.find(
+//       (todo) => todo._id.toString() === req.params.id
+//     );
+//     if (todo) {
+//       res.json({ todo });
+//     } else {
+//       res.status(404).json({ message: "Todo not found" });
+//     }
+//   } else {
+//     res.status(403).json({ message: "User not found" });
+//   }
+// });
 
 router.get("/todos/completed", authenticateJwt, async (req, res) => {
-  const user = await User.findOne({ username: req.user.username }).populate(
+  const user = await User.findById(req.userId).populate(
     "todos"
   );
   if (user) {
@@ -98,7 +101,7 @@ router.get("/todos/completed", authenticateJwt, async (req, res) => {
 });
 
 router.put("/todos/:todoId", authenticateJwt, async (req, res) => {
-  const user = await User.findOne({ username: req.user.username });
+  const user = await User.findById(req.userId);
   const todo = await Todo.findById(req.params.todoId);
   if (todo) {
     todo.isDone = true;
@@ -110,11 +113,29 @@ router.put("/todos/:todoId", authenticateJwt, async (req, res) => {
   }
 });
 
+
 router.delete("/todos/:todoId", authenticateJwt, async (req, res) => {
-  const user = await User.findOne({ username: req.user.username });
-  await Todo.findByIdAndDelete(req.params.todoId);
-  await user.save();
-  res.json({ message: "Todo deleted successfully" });
+  try {
+    const todoId = req.params.todoId;
+    // Find the todo document by its ID
+    const todo = await Todo.findById(todoId);
+    // If todo not found, return 404
+    if (!todo) {
+      return res.status(404).json({ message: 'Todo not found' });
+    }
+    // Extract the userId from the todo document
+    const userId = todo.userId;
+    // Remove the todo ID from the todos array of the user document
+    const user = await User.findById(userId)
+    await User.findByIdAndUpdate(userId, { $pull: { todos: todoId } });
+    // Delete the todo document
+    await Todo.findByIdAndDelete(todoId);
+    // Return success response
+    return res.status(200).json({ message: 'Todo deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting todo:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
 module.exports = router;

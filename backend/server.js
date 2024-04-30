@@ -18,7 +18,7 @@ app.use("/api", userRouter);
 mongoose.connect(
   `${mongoConnectURL}`,
   {
-    dbName: "todoApp",
+    dbName: "todos",
   }
 );
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-const backendUrl = "http://localhost:3000/api";
+const backendUrl = import.meta.env.VITE_API_URL;
 
 /**
  * Functional component representing the application's app bar.

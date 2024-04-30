@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Typography, TextField } from "@mui/material";
 import axios from "axios";
-const backendUrl = "http://localhost:3000/api";
+const backendUrl = import.meta.env.VITE_API_URL;
 
 export default function AddTodo({
   handleAddTodoState,

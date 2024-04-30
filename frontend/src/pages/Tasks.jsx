@@ -7,7 +7,7 @@ import { Grid } from "@mui/material/";
 import Sidebar from "../components/Sidebar";
 import Task from "../components/Task";
 import AddTodo from "../components/AddTodo";
-const backendUrl = "http://ec2-16-171-143-39.eu-north-1.compute.amazonaws.com:3000/api";
+const backendUrl = import.meta.env.VITE_API_URL;
 
 // Define the Tasks component
 function Tasks() {

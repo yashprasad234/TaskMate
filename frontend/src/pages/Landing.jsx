@@ -28,7 +28,10 @@ function Landing() {
     <Box sx={{ flexGrow: 1 }} style={{ marginTop: "4rem" }}>
       <Grid container spacing={10}>
         <Grid item xs={12} sm={12} md={6} lg={6}>
-          <Card className="landing-card left-card">
+          <Card
+            className="landing-card left-card"
+            style={{ boxShadow: "none" }}
+          >
             <Typography variant="h4">
               Keep all your tasks in one place, some more text and some image
             </Typography>
@@ -38,7 +41,12 @@ function Landing() {
         <Grid item xs={12} sm={12} md={6} lg={6}>
           <Card
             className="landing-card right-card"
-            style={{ border: "1px solid black", boxShadow: "non" }}
+            style={{
+              border: "1px solid black",
+              boxShadow: "none",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
           >
             <TextField
               label="Email"

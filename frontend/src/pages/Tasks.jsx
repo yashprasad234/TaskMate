@@ -66,10 +66,10 @@ function Tasks() {
 
   return (
     <Grid container spacing={10}>
-      <Grid item md={4} lg={3} style={{ display: { sm: "none" } }}>
-        <Sidebar />
+      <Grid item sm={3} md={4} lg={3} display={{ xs: "none", sm: "block" }}>
+        <Sidebar style={{ display: { xs: "none" } }} />
       </Grid>
-      <Grid item xs={12} sm={12} md={8} lg={9}>
+      <Grid item xs={12} sm={9} md={8} lg={9}>
         {todos.map((todo) => (
           <Task
             key={todo._id}

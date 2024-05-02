@@ -25,7 +25,7 @@ function Signin() {
         isLoading: false,
         username: username,
       });
-      navigate("/tasks");
+      navigate("/today");
     } catch (err) {
       console.error(err);
     }

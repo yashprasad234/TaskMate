@@ -5,25 +5,18 @@ import axios from "axios";
 import { useState } from "react";
 const backendUrl = import.meta.env.VITE_API_URL;
 
-/**
- * Functional component representing the landing page.
- * @returns {JSX.Element} JSX representation of the component.
- */
 function Landing() {
   const navigate = useNavigate();
 
-  // State variables for username and password
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  // Function to handle sign-up button click
   const handleClick = async () => {
     try {
       const response = await axios.post(`${backendUrl}/signup`, {
         username,
         password,
       });
-      // Redirect to sign-in page on successful sign-up
       navigate("/signin");
       console.log(response.data);
     } catch (err) {
@@ -34,7 +27,6 @@ function Landing() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={10}>
-        {/* Left section */}
         <Grid item xs={12} sm={12} md={6} lg={6}>
           <Card className="landing-card left-card">
             <Typography variant="h4">
@@ -43,10 +35,8 @@ function Landing() {
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ00x3ArV4bxw5X_FRkub4laQrc4AcHnrqPD-ThBQ5piGd0XeX5xEn6i-RbaXu9NeXKeqY"></img>
           </Card>
         </Grid>
-        {/* Right section */}
         <Grid item xs={12} sm={12} md={6} lg={6}>
           <Card className="landing-card right-card">
-            {/* Username input */}
             <TextField
               label="Email"
               variant="outlined"
@@ -58,7 +48,6 @@ function Landing() {
             />
             <br />
             <br />
-            {/* Password input */}
             <TextField
               label="Password"
               variant="outlined"
@@ -70,7 +59,6 @@ function Landing() {
             />
             <br />
             <br />
-            {/* Sign-up button */}
             <Button
               variant="contained"
               fullWidth={true}
@@ -81,7 +69,6 @@ function Landing() {
             </Button>
             <br />
             <br />
-            {/* Sign-in button */}
             <div
               style={{
                 display: "flex",

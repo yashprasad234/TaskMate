@@ -1,16 +1,8 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 const backendUrl = import.meta.env.VITE_API_URL;
-
-/**
- * Functional component representing the application's app bar.
- * It fetches user information upon component mount.
- * @returns {JSX.Element} JSX representation of the component.
- */
 function Appbar() {
   const token = localStorage.getItem("token");
-
-  // Effect to fetch user information upon component mount
   useEffect(() => {
     const fetchMe = async () => {
       try {
@@ -19,7 +11,6 @@ function Appbar() {
             Authorization: `Bearer ${token}`,
           },
         });
-        // Process the response here if needed
       } catch (error) {
         console.error("Error fetching user information:", error);
       }
@@ -34,7 +25,6 @@ function Appbar() {
         padding: "10px",
       }}
     >
-      {/* Application title */}
       <div
         style={{
           display: "flex",

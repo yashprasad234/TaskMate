@@ -9,8 +9,8 @@ const userSchema = new mongoose.Schema({
 const todoSchema = new mongoose.Schema({
   title: { type: String, required: true },
   isDone: { type: Boolean, default: false },
-  timestamp: { type: String },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  timestamp: { type: Object },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
 const User = mongoose.model("User", userSchema);

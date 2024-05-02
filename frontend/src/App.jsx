@@ -5,11 +5,11 @@ import { useEffect } from "react";
 import Appbar from "./components/Appbar";
 import Landing from "./pages/Landing";
 import Signin from "./pages/Signin";
-import Tasks from "./pages/Tasks";
+import Today from "./pages/Today";
+import Inbox from "./pages/Inbox";
+import Completed from "./pages/Completed";
 import { userState } from "./store/atoms/user";
-import { isUserLoading } from "./store/selectors/isUserLoading";
 import { userEmailState } from "./store/selectors/userEmail";
-import Task from "./components/Task";
 
 const backendUrl = import.meta.VITE_API_URL;
 
@@ -29,9 +29,14 @@ function App2() {
       <Appbar />
       <InitUser />
       <Routes>
-        <Route path="/" element={userEmail ? <Tasks /> : <Landing />} />
-        <Route path="/signin" element={userEmail ? <Tasks /> : <Signin />} />
-        <Route path="/tasks" element={userEmail ? <Tasks /> : <Landing />} />
+        <Route path="/" element={userEmail ? <Today /> : <Landing />} />
+        <Route path="/signin" element={userEmail ? <Today /> : <Signin />} />
+        <Route path="/today" element={userEmail ? <Today /> : <Landing />} />
+        <Route path="/inbox" element={userEmail ? <Inbox /> : <Landing />} />
+        <Route
+          path="/completed"
+          element={userEmail ? <Completed /> : <Landing />}
+        />
       </Routes>
     </Router>
   );

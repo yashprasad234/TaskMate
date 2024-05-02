@@ -82,10 +82,17 @@ router.put("/todos/:todoId", authenticateJwt, async (req, res) => {
   const user = await User.findById(req.userId);
   const todo = await Todo.findById(req.params.todoId);
   if (todo) {
-    todo.isDone = true;
-    await todo.save();
-    await user.save();
-    res.json({ message: "Todo marked as done" });
+    if (todo.isDone) {
+      todo.isDone = false;
+      await todo.save();
+      await user.save();
+      res.json({ message: "Todo marked as not done" });
+    } else {
+      todo.isDone = true;
+      await todo.save();
+      await user.save();
+      res.json({ message: "Todo marked as done" });
+    }
   } else {
     res.status(404).json({ message: "Todo not found" });
   }

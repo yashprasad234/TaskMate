@@ -3,11 +3,14 @@ import { Card, TextField, Typography, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import { userState } from "../store/atoms/user";
+import { useSetRecoilState } from "recoil";
+
 const backendUrl = import.meta.env.VITE_API_URL;
 
 function Signin() {
   const navigate = useNavigate();
-
+  const setUser = useSetRecoilState(userState);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,17 +19,23 @@ function Signin() {
       const response = await axios.post(`${backendUrl}/login`, null, {
         headers: { username, password },
       });
-      navigate("/tasks");
-      console.log(response.data);
       localStorage.setItem("token", response.data.token);
+      console.log(response.data);
+      setUser({
+        isLoading: false,
+        username: username,
+      });
+      navigate("/tasks");
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <Box sx={{ margin: "50px auto 20px", maxWidth: "400px" }}>
-      <Card display={{ border: "none", boxShadow: "none", overflow: "none" }}>
+    <Box sx={{ margin: "50px auto 20px", maxWidth: "425px" }}>
+      <Card
+        style={{ padding: "2rem", border: "1px solid black", boxShadow: "non" }}
+      >
         <TextField
           label="Email"
           type="email"
@@ -35,6 +44,7 @@ function Signin() {
           fullWidth={true}
           onChange={(e) => setUsername(e.target.value)}
         />
+        <br />
         <br />
         <br />
         <TextField
@@ -46,6 +56,7 @@ function Signin() {
           fullWidth={true}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <br />
         <br />
         <br />
         <Button

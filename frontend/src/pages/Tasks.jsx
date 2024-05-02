@@ -33,6 +33,7 @@ function Tasks() {
         },
       });
       console.log(response.data.message);
+      setUpdateCounter((c) => c + 1);
     } catch (err) {
       console.error(err);
     }

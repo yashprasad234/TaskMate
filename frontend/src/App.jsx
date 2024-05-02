@@ -7,22 +7,33 @@ import Landing from "./pages/Landing";
 import Signin from "./pages/Signin";
 import Tasks from "./pages/Tasks";
 import { userState } from "./store/atoms/user";
+import { isUserLoading } from "./store/selectors/isUserLoading";
+import { userEmailState } from "./store/selectors/userEmail";
+import Task from "./components/Task";
 
 const backendUrl = import.meta.VITE_API_URL;
 
 function App() {
   return (
     <RecoilRoot>
-      <Router>
-        <Appbar />
-        <InitUser />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/tasks" element={<Tasks />} />
-        </Routes>
-      </Router>
+      <App2 />
     </RecoilRoot>
+  );
+}
+
+function App2() {
+  const userEmail = useRecoilValue(userEmailState);
+
+  return (
+    <Router>
+      <Appbar />
+      <InitUser />
+      <Routes>
+        <Route path="/" element={userEmail ? <Tasks /> : <Landing />} />
+        <Route path="/signin" element={userEmail ? <Tasks /> : <Signin />} />
+        <Route path="/tasks" element={userEmail ? <Tasks /> : <Landing />} />
+      </Routes>
+    </Router>
   );
 }
 

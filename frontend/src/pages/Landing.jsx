@@ -25,7 +25,7 @@ function Landing() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} style={{ marginTop: "4rem" }}>
       <Grid container spacing={10}>
         <Grid item xs={12} sm={12} md={6} lg={6}>
           <Card className="landing-card left-card">
@@ -36,7 +36,10 @@ function Landing() {
           </Card>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6}>
-          <Card className="landing-card right-card">
+          <Card
+            className="landing-card right-card"
+            style={{ border: "1px solid black", boxShadow: "non" }}
+          >
             <TextField
               label="Email"
               variant="outlined"

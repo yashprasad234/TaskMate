@@ -20,6 +20,7 @@ export default function Task({ task, handleComplete, handleDelete }) {
           }}
         >
           <Checkbox
+            checked={task.isDone}
             onClick={() => {
               handleComplete(task._id);
             }}

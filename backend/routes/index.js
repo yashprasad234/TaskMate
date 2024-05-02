@@ -1,6 +1,7 @@
 const express = require("express");
-const { User, Todo } = require("../db/index.js");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const { User, Todo } = require("../db/index.js");
 const { SECRET, authenticateJwt } = require("../middleware/auth.js");
 
 const router = express.Router();
@@ -26,9 +27,10 @@ router.post("/signup", async (req, res) => {
   if (user) {
     res.status(403).json({ message: "User already exists" });
   } else {
-    const newUser = new User({ username, password });
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
-    const token = jwt.sign({ id: newUser._id }, SECRET, { expiresIn: "1h" });
     res.json({ message: "User created successfully" });
   }
 });
@@ -36,8 +38,13 @@ router.post("/signup", async (req, res) => {
 // sign in
 router.post("/login", async (req, res) => {
   const { username, password } = req.headers;
-  const user = await User.findOne({ username, password });
+  const user = await User.findOne({ username });
   if (user) {
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    !validPassword && res.status(400).json("wrong password");
     const token = jwt.sign({ id: user._id }, SECRET, {
       expiresIn: "1h",
     });

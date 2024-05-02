@@ -3,43 +3,39 @@ import { Card, TextField, Typography, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import { userState } from "../store/atoms/user";
+import { useSetRecoilState } from "recoil";
+
 const backendUrl = import.meta.env.VITE_API_URL;
 
-/**
- * Functional component representing the sign-in form.
- * @returns {JSX.Element} JSX representation of the component.
- */
 function Signin() {
   const navigate = useNavigate();
-
-  // State variables for username and password
+  const setUser = useSetRecoilState(userState);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  // Function to handle sign-in button click
   const handleClick = async () => {
     try {
-      const response = await axios.post(
-        `${backendUrl}/login`,
-        null,
-        {
-          headers: { username, password },
-        }
-      );
-      // Redirect to tasks page on successful sign-in
-      navigate("/tasks");
-      console.log(response.data);
-      // Store the token in local storage
+      const response = await axios.post(`${backendUrl}/login`, null, {
+        headers: { username, password },
+      });
       localStorage.setItem("token", response.data.token);
+      console.log(response.data);
+      setUser({
+        isLoading: false,
+        username: username,
+      });
+      navigate("/tasks");
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <Box sx={{ margin: "50px auto 20px", maxWidth: "400px" }}>
-      <Card display={{ border: "none", boxShadow: "none", overflow: "none" }}>
-        {/* Username input */}
+    <Box sx={{ margin: "50px auto 20px", maxWidth: "425px" }}>
+      <Card
+        style={{ padding: "2rem", border: "1px solid black", boxShadow: "non" }}
+      >
         <TextField
           label="Email"
           type="email"
@@ -50,7 +46,7 @@ function Signin() {
         />
         <br />
         <br />
-        {/* Password input */}
+        <br />
         <TextField
           label="Password"
           variant="outlined"
@@ -62,7 +58,7 @@ function Signin() {
         />
         <br />
         <br />
-        {/* Sign-in button */}
+        <br />
         <Button
           variant="contained"
           fullWidth={true}
@@ -73,7 +69,6 @@ function Signin() {
         </Button>
         <br />
         <br />
-        {/* Sign-up button */}
         <div
           style={{
             display: "flex",

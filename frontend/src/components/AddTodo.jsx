@@ -10,19 +10,15 @@ export default function AddTodo({
   setAddState,
   handleTodoAdded,
 }) {
-  // State to store todo title
   const [todoTitle, setTodoTitle] = React.useState("");
-  // Reference for the text field
   const inputRef = useRef(null);
 
-  // Effect to focus the text field when addState becomes true
   useEffect(() => {
     if (addState && inputRef.current) {
       inputRef.current.focus();
     }
   }, [addState]);
 
-  // Function to handle adding a new todo
   const handleAddTodo = async (e) => {
     if (e.key === "Enter") {
       setAddState(false);
@@ -47,7 +43,6 @@ export default function AddTodo({
 
   return (
     <div>
-      {/* Render input field if addState is true, otherwise render "Add task" button */}
       {addState ? (
         <div>
           <TextField
@@ -56,10 +51,10 @@ export default function AddTodo({
             variant="standard"
             fullWidth={true}
             onChange={(e) => {
-              setTodoTitle(e.target.value); // Update todoTitle state as user types
+              setTodoTitle(e.target.value);
             }}
-            onKeyDown={handleAddTodo} // Call handleAddTodo when user presses Enter key
-            inputRef={inputRef} // Assign the ref to the text field
+            onKeyDown={handleAddTodo}
+            inputRef={inputRef}
           />
         </div>
       ) : (
@@ -69,7 +64,7 @@ export default function AddTodo({
             boxSizing: "border-box",
             cursor: "pointer",
           }}
-          onClick={handleAddTodoState} // Call handleAddTodoState when button is clicked
+          onClick={handleAddTodoState}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div
@@ -78,11 +73,8 @@ export default function AddTodo({
                 alignItems: "center",
               }}
             >
-              <AddIcon /> {/* Add task icon */}
-              <Typography style={{ marginLeft: "10px" }}>
-                Add task
-              </Typography>{" "}
-              {/* "Add task" text */}
+              <AddIcon />
+              <Typography style={{ marginLeft: "10px" }}>Add task</Typography>
             </div>
           </div>
         </div>

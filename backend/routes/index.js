@@ -40,10 +40,7 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.headers;
   const user = await User.findOne({ username });
   if (user) {
-    const validPassword = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
+    const validPassword = await bcrypt.compare(password, user.password);
     !validPassword && res.status(400).json("wrong password");
     const token = jwt.sign({ id: user._id }, SECRET, {
       expiresIn: "1h",

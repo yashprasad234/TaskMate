@@ -11,7 +11,7 @@ import Completed from "./pages/Completed";
 import { userState } from "./store/atoms/user";
 import { userEmailState } from "./store/selectors/userEmail";
 
-const backendUrl = import.meta.VITE_API_URL;
+const backendUrl = import.meta.env.VITE_API_URL;
 
 function App() {
   return (
@@ -69,7 +69,7 @@ function InitUser() {
       console.error(e);
       setUser({
         isLoading: false,
-        username: res.data.user,
+        username: null,
       });
     }
   };
